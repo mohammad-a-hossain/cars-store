@@ -5,5 +5,10 @@ export interface customButtonProps{
     containerStyle ?: string,
     handleClick? : 
     MouseEventHandler<HTMLButtonElement>
+    btnType?: 'button' | 'submit'
 
+}
+export interface SearchMenuFactureProps{
+    manuFacture:string,
+    setManuFacture:(manuFacture:string) => void
 }
