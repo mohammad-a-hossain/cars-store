@@ -4,6 +4,7 @@ import { CarProps } from '../types'
 import {CustomButton }from './CustomButton'
 import { CalculateCarRent } from '../lib';
 import Image from 'next/image'
+import { CardDeails } from './CardDeails';
 
 interface CardCarProp{
     car: CarProps;
@@ -47,8 +48,12 @@ const CarCard = ({car}:CardCarProp) => {
         <Image src='/hero.png' alt='car model' fill priority className='object-contain' />
       </div>
       
-       
-
+      <div className='flex flex-col flex-1 gap-2'>
+     
+                  <h2 className='text-xl font-semibold capitalize'>
+                    {car.make} {car.model}
+                  </h2>
+                  </div>
 
     <div className='relative flex w-full mt-2'>
     <div className='flex justify-between w-full group-hover:invisible text-grey'>
@@ -81,6 +86,8 @@ const CarCard = ({car}:CardCarProp) => {
    
     </div>
 
+    
+    <CardDeails isOpen={isOpen} closeModal={()=> setIsOPen(false)} car={car} />
     </div>
   )
 }
