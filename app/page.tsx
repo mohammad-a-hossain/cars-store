@@ -4,12 +4,20 @@ import  Searchbar from '../Components/Searchbar'
 import CustomFilter from '../Components/CustomFilter'
 import { fetchCars } from '../lib'
 import CarCard from '../Components/CarCard'
+import { HomeProps } from '../types'
+import { fuels, yearsOfProduction } from '../mockData'
 
 
 
+export default async function  Home({searchParams}:HomeProps) {
+  const allCars = await fetchCars({
+    manuFacture:searchParams.manuFacture || '',
+    year: searchParams.year || 2022,
+    fuel: searchParams.fuel || '',
+    limit: searchParams.limit || 6,
+    model: searchParams.model || '',
+  })
 
-export default async function  Home() {
-  const allCars = await fetchCars()
   console.log(allCars)
 //const isDataEmpty = !Array.isArray(allCars) || allCars.length < 1 || !allCars ;
  const isDataEmpty = !Array.isArray(allCars) || allCars.length < 1 || !allCars;
@@ -32,7 +40,7 @@ export default async function  Home() {
 
        <div className='home__filter-container'>
         <CustomFilter title="fuel"/>
-        <CustomFilter year="year"/>
+        <CustomFilter  year= "year"/>
        </div>
      </div>
      {
