@@ -6,6 +6,7 @@ import { fetchCars } from '../lib'
 import CarCard from '../Components/CarCard'
 import { HomeProps } from '../types'
 import { fuels, yearsOfProduction } from '../mockData'
+import {ShowMore} from '../Components/ShowMore'
 
 
 
@@ -14,10 +15,11 @@ export default async function  Home({searchParams}:HomeProps) {
     manuFacture:searchParams.manuFacture || '',
     year: searchParams.year || 2022,
     fuel: searchParams.fuel || '',
-    limit: searchParams.limit || 6,
+    limit: searchParams.limit || 8,
     model: searchParams.model || '',
   })
 
+  
   console.log(allCars)
 //const isDataEmpty = !Array.isArray(allCars) || allCars.length < 1 || !allCars ;
  const isDataEmpty = !Array.isArray(allCars) || allCars.length < 1 || !allCars;
@@ -39,8 +41,8 @@ export default async function  Home({searchParams}:HomeProps) {
       
 
        <div className='home__filter-container'>
-        <CustomFilter title="fuel"/>
-        <CustomFilter  year= "year"/>
+        <CustomFilter title="fuel" options={fuels}/>
+        <CustomFilter  year= "year" options={yearsOfProduction}/>
        </div>
      </div>
      {
@@ -53,7 +55,10 @@ export default async function  Home({searchParams}:HomeProps) {
         ))
         }
           </div>
-      
+        <ShowMore 
+        pageNumber={(searchParams.limit || 8) / 8} 
+        isNext= {(searchParams.limit || 8) > allCars.length } />
+        
         </section>
       ) : (
         <div>
