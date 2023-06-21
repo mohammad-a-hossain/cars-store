@@ -1,4 +1,5 @@
 import { MouseEventHandler } from "react";
+import function from './../app/page';
 
 export interface customButtonProps{
     title:string;
@@ -56,9 +57,13 @@ export interface OptionProps{
 export interface CustomFilterProps{
     title:string;
     options:OptionProps[] ;
+    
+    
+    
 }
 
 export interface ShowMoreProps{
     pageNumber: number;
     isNext: boolean;
+    
 }

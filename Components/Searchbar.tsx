@@ -22,46 +22,51 @@ const SearchButton =({otherclass}:{otherclass: string})=>(
 
 
 
- const Searchbar = () => {
-    const [manuFacture, setManuFacture] = useState('')
-    const [model, setModel]= useState('')
+ const Searchbar = ({setManuFacture,setModel}) => {
+    const [searchManuFacture, setSearchManuFacture] = useState('') //setManuFacture
+    const [searchModel, setSearchModel]= useState('')
 
-    const router = useRouter()
-    const pathname = usePathname();
+    // const router = useRouter()
+    // const pathname = usePathname();
     
     const handleSearch = (e:React.FormEvent<HTMLFormElement> )=>{
       e.preventDefault()
-      if(manuFacture === '' && model === ''){
+      if(searchManuFacture === '' && searchModel === ''){
         return alert('nothing to input search')
       }
-      updateSearchParams(model.toLowerCase(), manuFacture.toLowerCase())
+     //console.log(searchManuFacture)
+      setSearchManuFacture(searchManuFacture),
+      setSearchModel(searchModel)
     }
 
-    const updateSearchParams = (model:string, manuFacture:string)=>{
-      const searchParams =new URLSearchParams(window.location.search)
-    //  console.log(searchParams)
-      if(model){
-        searchParams.set('model', model)
-      }else{
-        searchParams.delete('model')
-      }
+    // const updateSearchParams = (model:string, manuFacture:string)=>{
+    //   const searchParams =new URLSearchParams(window.location.search)
+    // //  console.log(searchParams)
+    //   if(model){
+    //     searchParams.set('model', model)
+    //   }else{
+    //     searchParams.delete('model')
+    //   }
 
-      if(manuFacture){
-        searchParams.set('manuFacture', manuFacture)
-      }else{
-        searchParams.delete('manuFacture')
-      }
+    //   if(manuFacture){
+    //     searchParams.set('manuFacture', manuFacture)
+    //   }else{
+    //     searchParams.delete('manuFacture')
+    //   }
 
-      const newPatName = `${window.location.pathname} ? ${searchParams.toString()}`
+    //   const newPatName = `${window.location.pathname} ? ${searchParams.toString()}`
       
-      router.push(newPatName)
+    //   router.push(newPatName)
 
-    }
+    // }
     
   return (
     <form className='searchbar' onSubmit={handleSearch}>
         <div className='searchbar__item'>
-            <SearchMenuFacture  manuFacture={manuFacture} setManuFacture={setManuFacture} />
+            <SearchMenuFacture 
+            selected={searchManuFacture}
+            setSelected={setSearchManuFacture} />
+
             <SearchButton  className='sm:hidden'/>
         </div>
 
@@ -76,8 +81,8 @@ const SearchButton =({otherclass}:{otherclass: string})=>(
         <input
           type='text'
           name='model'
-          model={model}
-          onChange={(e) => setModel(e.target.value)}
+          value={searchModel}
+          onChange={(e) => setSearchModel(e.target.value)}
           placeholder='Tiguan...'
           className='searchbar__input'
         />

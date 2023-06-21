@@ -6,10 +6,10 @@ import { manufactures } from './../mockData/index';
 
 
 
-export const SearchMenuFacture = ({manuFacture, setManuFacture }:SearchMenuFactureProps) => {
+export const SearchMenuFacture = ({selected, setSelected}:SearchMenuFactureProps) => {
     const [query, setQuery] = useState('');
     
-    const [selected, setSelected] = useState(manufactures[0])
+    //const [selected, setSelected] = useState(manufactures[0])
 
     const filtermanuFatcures = query === '' ? manufactures: manufactures.filter((item) =>(
         item.toLowerCase().replace(/\s+/g,'').includes(query.toLowerCase().replace(/\s+/g,''))

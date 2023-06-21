@@ -1,28 +1,65 @@
+'use client'
+import {useState,useEffect} from 'react'
 import Image from 'next/image'
 import {Hero} from '../Components/Hero'
 import  Searchbar from '../Components/Searchbar'
 import CustomFilter from '../Components/CustomFilter'
 import { fetchCars } from '../lib'
 import CarCard from '../Components/CarCard'
-import { HomeProps } from '../types'
+//import { HomeProps } from '../types'
 import { fuels, yearsOfProduction } from '../mockData'
 import {ShowMore} from '../Components/ShowMore'
 
 
 
-export default async function  Home({searchParams}:HomeProps) {
-  const allCars = await fetchCars({
-    manuFacture:searchParams.manuFacture || '',
-    year: searchParams.year || 2022,
-    fuel: searchParams.fuel || '',
-    limit: searchParams.limit || 8,
-    model: searchParams.model || '',
-  })
+export default  function Home(){
+
+  const [allCars, setAllCars] = useState([])
+  const [loading, setLoading] = useState(false)
+  
+ 
+  //search state
+  const [manuFacture, setManuFacture ] = useState('')
+  const [model, setModel] = useState('')
+
+  // filter state
+  const [fuel, setFuel] = useState('')
+  const [year, setYear] = useState(2022)
+
+  // pagination state
+  const [ limit, setLimit] = useState(8)
+
+  const getCars = async()=>{
+    setLoading(true)
+     try{
+      const result = await fetchCars({
+        manuFacture:manuFacture || '',
+        year:year || 2022,
+        fuel:fuel || '',
+        limit:limit || 8,
+        model:model || '',
+      })
+
+      setAllCars(result)
+     }catch(error){
+
+     }finally{
+      setLoading(false)
+     }  
+  } 
+  
+  useEffect(()=>{
+    console.log(manuFacture,year,fuel,limit,model)
+    getCars()
+
+  },[manuFacture,year,fuel,limit,model])
+  
+ 
 
   
-  console.log(allCars)
+  //console.log(allCars)
 //const isDataEmpty = !Array.isArray(allCars) || allCars.length < 1 || !allCars ;
- const isDataEmpty = !Array.isArray(allCars) || allCars.length < 1 || !allCars;
+// const isDataEmpty = !Array.isArray(allCars) || allCars.length < 1 || !allCars;
   return (
     <main className="overflow-hidden">
     <Hero/>
@@ -37,27 +74,43 @@ export default async function  Home({searchParams}:HomeProps) {
 
 
        <div className='home__filters'>
-        <Searchbar/>
+        <Searchbar setManuFacture={setManuFacture} setModel={setModel}
+          />
       
 
        <div className='home__filter-container'>
-        <CustomFilter title="fuel" options={fuels}/>
-        <CustomFilter  year= "year" options={yearsOfProduction}/>
+        <CustomFilter title="fuel" options={fuels} setFilter={setFuel} />
+        <CustomFilter  title= "year" options={yearsOfProduction} setFilter={setYear} />
        </div>
      </div>
      {
-     !isDataEmpty ? (
+     allCars.length > 0 ? (
         <section>
           <div className='home__cars-wrapper'>
 
-        {allCars?.map((car) =>(
-          <CarCard car={car}/> 
+        {allCars?.map((car,index) =>(
+          <CarCard car={car} key={index}/> 
         ))
         }
           </div>
+         
+        { loading  && 
+       ( <div className='mt-16 w-full flext-center'>
+      <Image
+          src='/my-loader.svg' 
+          alt="loader"
+          width={100}
+          height={100}
+          className='object-contain'
+       />
+
+        </div>)
+       }
+
         <ShowMore 
-        pageNumber={(searchParams.limit || 8) / 8} 
-        isNext= {(searchParams.limit || 8) > allCars.length } />
+        pageNumber={limit / 8} 
+        isNext= {limit> allCars.length } 
+        setLimit={setLimit}/>
         
         </section>
       ) : (

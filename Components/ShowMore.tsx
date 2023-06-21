@@ -6,14 +6,15 @@ import { useRouter} from 'next/navigation'
 import {CustomButton } from './CustomButton'
 import { updateSearchParams } from '../lib'
 
-export const ShowMore = ({pageNumber, isNext}: ShowMoreProps) => {
-    const router = useRouter()
+export const ShowMore = ({pageNumber, isNext, setLimit}: ShowMoreProps) => {
+   // const router = useRouter()
 
 
     const handleNavigation = () => {
         const newLimit = (pageNumber + 1) * 8;
-        const newPathname = updateSearchParams("limit", `${newLimit}`);
-        router.push(newPathname);
+      //  const newPathname = updateSearchParams("limit", `${newLimit}`);
+    //    router.push(newPathname);
+        setLimit(newLimit)
       };
   return (
     <div className="w-full gap-5 mt-10 flex-center">
